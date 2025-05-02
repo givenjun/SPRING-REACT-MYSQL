@@ -1,0 +1,1 @@
+import SingUpResponseDto from './sign-up.response.dto';

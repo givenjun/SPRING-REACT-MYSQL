@@ -19,5 +19,5 @@ public class ResponseDto {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
     }
 
-
 }
+
