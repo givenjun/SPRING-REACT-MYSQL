@@ -5,7 +5,6 @@ import { AUTH_PATH, BOARD_DETAIL_PATH, BOARD_PATH, BOARD_UPDATE_PATH, BOARD_WRIT
 import { useCookies } from 'react-cookie';
 import { useLoginUserStore } from 'stores';
 import useBoardStore from 'stores/board.store';
-import path from 'path';
 
 //          component: 헤더 레이아웃          //
 export default function Header() {
