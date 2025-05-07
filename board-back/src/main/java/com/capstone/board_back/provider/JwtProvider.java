@@ -44,12 +44,12 @@ public class JwtProvider {
                     .build()
                     .parseClaimsJws(jwt)
                     .getBody();
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return null;
         }
 
-        return claims.getId();
-
+        return claims.getSubject();
     }
 }
