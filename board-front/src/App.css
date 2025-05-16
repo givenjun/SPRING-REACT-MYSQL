@@ -3,6 +3,10 @@
     border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
 
+.emphasis {
+    font-weight: bolder;
+}
+ 
 .black-button {
     border-radius: 46px;
     width: 95px;
