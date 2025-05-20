@@ -3,6 +3,7 @@ package com.capstone.board_back.repository;
 import com.capstone.board_back.entity.FavoriteEntity;
 import com.capstone.board_back.entity.primaryKey.FavoritePk;
 import com.capstone.board_back.repository.resultSet.GetFavoriteListResultSet;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -27,4 +28,7 @@ public interface FavoriteRepository extends JpaRepository<FavoriteEntity, Favori
                 nativeQuery = true
     )
     List<GetFavoriteListResultSet> getFavoriteList(Integer boardNumber);
+
+    @Transactional
+    void deleteByBoardNumber(Integer boardNumber);
 }
