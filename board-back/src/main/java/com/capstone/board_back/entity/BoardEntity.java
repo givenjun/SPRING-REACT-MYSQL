@@ -1,6 +1,8 @@
 package com.capstone.board_back.entity;
 
+import com.capstone.board_back.dto.request.board.PatchBoardRequestDto;
 import com.capstone.board_back.dto.request.board.PostBoardRequestDto;
+import com.capstone.board_back.dto.response.board.PatchBoardResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -61,6 +63,11 @@ public class BoardEntity {
 
     public void decreaseCommentCount() {
         this.commentCount--;
+    }
+
+    public void patchBoard(PatchBoardRequestDto dto) {
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
     }
 
 }

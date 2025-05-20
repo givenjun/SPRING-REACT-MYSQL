@@ -1,13 +1,11 @@
 package com.capstone.board_back.service.implement;
 
+import com.capstone.board_back.dto.request.board.PatchBoardRequestDto;
 import com.capstone.board_back.dto.request.board.PostBoardRequestDto;
 import com.capstone.board_back.dto.request.board.PostCommentRequestDto;
 import com.capstone.board_back.dto.response.ResponseDto;
 import com.capstone.board_back.dto.response.board.*;
-import com.capstone.board_back.entity.BoardEntity;
-import com.capstone.board_back.entity.CommentEntity;
-import com.capstone.board_back.entity.FavoriteEntity;
-import com.capstone.board_back.entity.ImageEntity;
+import com.capstone.board_back.entity.*;
 import com.capstone.board_back.repository.*;
 import com.capstone.board_back.repository.resultSet.GetBoardResultSet;
 import com.capstone.board_back.repository.resultSet.GetCommnetListResultSet;
@@ -29,6 +27,7 @@ public class BoardServiceImplement implements BoardService {
     private final ImageRepository imageRepository;
     private final CommentRepository commentRepository;
     private final FavoriteRepository favoriteRepository;
+    private final BoardListViewRepository boardListViewRepository;
 
     @Override
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
@@ -39,7 +38,7 @@ public class BoardServiceImplement implements BoardService {
         try {
 
             resultSet = boardRepository.getBoard(boardNumber);
-            if (resultSet == null) return GetBoardResponseDto.noExistBoard();
+            if (resultSet == null) return GetBoardResponseDto.notExistBoard();
 
             imageEntities = imageRepository.findByBoardNumber(boardNumber);
 
@@ -93,6 +92,23 @@ public class BoardServiceImplement implements BoardService {
 
         return GetCommentListResponseDto.success(resultSets);
 
+    }
+
+    @Override
+    public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList() {
+
+        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+
+        try {
+
+            boardListViewEntities = boardListViewRepository.findByOrderByWriteDatetimeDesc();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetLatestBoardListResponseDto.success(boardListViewEntities);
     }
 
     @Override
@@ -183,6 +199,41 @@ public class BoardServiceImplement implements BoardService {
 
         return PutFavoriteResponseDto.success();
 
+    }
+
+    @Override
+    public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email) {
+        try {
+
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null) return PatchBoardResponseDto.NotExistBoard();
+
+            boolean existedUser = userRepository.existsByEmail(email);
+            if (!existedUser) return PatchBoardResponseDto.NotExistUser();
+
+            String writerEmail = boardEntity.getWriterEmail();
+            boolean isWriter = writerEmail.equals(email);
+            if (!isWriter) return PatchBoardResponseDto.NotPermission();
+
+            boardEntity.patchBoard(dto);
+            boardRepository.save(boardEntity);
+
+            imageRepository.deleteByBoardNumber(boardNumber);
+            List<String> boardImageList = dto.getBoardImageList();
+            List<ImageEntity> imageEntities = new ArrayList<>();
+
+            for (String image: boardImageList) {
+                ImageEntity imageEntity = new ImageEntity(boardNumber, image);
+                imageEntities.add(imageEntity);
+            }
+
+            imageRepository.saveAll(imageEntities);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return PatchBoardResponseDto.success();
     }
 
     @Override

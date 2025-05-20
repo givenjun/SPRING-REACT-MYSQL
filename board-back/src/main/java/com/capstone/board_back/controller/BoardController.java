@@ -1,5 +1,6 @@
 package com.capstone.board_back.controller;
 
+import com.capstone.board_back.dto.request.board.PatchBoardRequestDto;
 import com.capstone.board_back.dto.request.board.PostBoardRequestDto;
 import com.capstone.board_back.dto.request.board.PostCommentRequestDto;
 import com.capstone.board_back.dto.response.board.*;
@@ -49,6 +50,12 @@ public class BoardController {
         return response;
     }
 
+    @GetMapping("/latest-list")
+    public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestList() {
+        ResponseEntity<? super GetLatestBoardListResponseDto> response = boardService.getLatestBoardList();
+        return response;
+    }
+
     @PostMapping("")
     public ResponseEntity<? super PostBoardResponseDto> postBoard(
             @RequestBody @Valid PostBoardRequestDto requestBody,
@@ -74,6 +81,16 @@ public class BoardController {
             @AuthenticationPrincipal String email
     ){
         ResponseEntity<? super PutFavoriteResponseDto> response = boardService.putFavorite(boardNumber, email);
+        return response;
+    }
+
+    @PatchMapping("/{boardNumber}")
+    public ResponseEntity<? super PatchBoardResponseDto> patchBoard(
+            @RequestBody @Valid PatchBoardRequestDto requestBody,
+            @PathVariable("boardNumber") Integer boardNumber,
+            @AuthenticationPrincipal String email
+    ) {
+        ResponseEntity<? super PatchBoardResponseDto> response = boardService.patchBoard(requestBody, boardNumber, email);
         return response;
     }
 
