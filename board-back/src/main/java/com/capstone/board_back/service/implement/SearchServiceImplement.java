@@ -1,10 +1,11 @@
 package com.capstone.board_back.service.implement;
 
 import com.capstone.board_back.dto.response.ResponseDto;
-import com.capstone.board_back.dto.response.board.GetTop3BoardListResponseDto;
 import com.capstone.board_back.dto.response.search.GetPopularListResponseDto;
+import com.capstone.board_back.dto.response.search.GetRelationListResponseDto;
 import com.capstone.board_back.repository.SearchLogRepository;
 import com.capstone.board_back.repository.resultSet.GetPopularListResultSet;
+import com.capstone.board_back.repository.resultSet.GetRelationListResultSet;
 import com.capstone.board_back.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +35,24 @@ public class SearchServiceImplement implements SearchService {
         }
 
         return GetPopularListResponseDto.success(resultSets);
+
+    }
+
+    @Override
+    public ResponseEntity<? super GetRelationListResponseDto> getRelationList(String searchWord) {
+
+        List<GetRelationListResultSet> resultSets = new ArrayList<>();
+
+        try {
+
+            resultSets = searchLogRepository.getRelationList(searchWord);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetRelationListResponseDto.success(resultSets);
+
     }
 }
