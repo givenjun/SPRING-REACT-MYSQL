@@ -2,7 +2,6 @@ import Top3Item from 'components/Top3Item'
 import './style.css'
 import { useEffect, useState } from 'react'
 import { BoardListItem } from 'types/interface'
-import { latestBoardListMock, top3BoardListMock } from 'mocks'
 import BoardItem from 'components/BoardItem'
 import Pagination from 'components/Pagination'
 import { useNavigate } from 'react-router-dom'
@@ -45,7 +44,7 @@ export default function Main() {
   return (
     <div id='main-top-wrapper'>
       <div className='main-top-container'>
-        <div className='main-top-title'>{`Jun's board에서\n다양한 이야기를 나눠보세요.`}</div>
+        <div className='main-top-title'><span className='emphasis'>{`Jun's board`}</span>{`에서\n다양한 이야기를 나눠보세요.`}</div>
         <div className='main-top-contents-box'>
           <div className='main-top-contents-title'>{`주간 TOP 3 게시물`}</div>
           <div className='main-top-contents'>
