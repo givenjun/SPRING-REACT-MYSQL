@@ -2,6 +2,7 @@ package com.capstone.board_back.service.implement;
 
 import com.capstone.board_back.dto.response.ResponseDto;
 import com.capstone.board_back.dto.response.user.GetSignInUserResponseDto;
+import com.capstone.board_back.dto.response.user.GetUserResponseDto;
 import com.capstone.board_back.entity.UserEntity;
 import com.capstone.board_back.repository.UserRepository;
 import com.capstone.board_back.service.UserService;
@@ -15,6 +16,25 @@ public class UserServiceImplement implements UserService {
 
 
     private final UserRepository userRepository;
+
+    @Override
+    public ResponseEntity<? super GetUserResponseDto> getUser(String email) {
+
+        UserEntity userEntity = null;
+
+        try {
+
+            userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return GetUserResponseDto.NotExistUser();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetUserResponseDto.success(userEntity);
+
+    }
 
     @Override
     public ResponseEntity<? super GetSignInUserResponseDto> getSignInUser(String email) {
