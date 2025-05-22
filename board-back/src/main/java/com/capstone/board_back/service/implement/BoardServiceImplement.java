@@ -172,7 +172,7 @@ public class BoardServiceImplement implements BoardService {
         try {
 
             boolean existedUser = userRepository.existsByEmail(email);
-            if (!existedUser) return GetUserBoardListResponseDto.NotExistUser();
+            if (!existedUser) return GetUserBoardListResponseDto.notExistUser();
 
             boardListViewEntities = boardListViewRepository.findByWriterEmailOrderByWriteDatetimeDesc(email);
 
