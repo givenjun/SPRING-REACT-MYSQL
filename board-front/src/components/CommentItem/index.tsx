@@ -12,12 +12,12 @@ interface Props {
 export default function CommentItem({ commentListItem }: Props) {
 
   //          state: properties          //
-  const { nickname, ProfileImage, writeDateTime, content } = commentListItem
+  const { nickname, ProfileImage, writeDatetime, content } = commentListItem
 
   //          function: 작성일 경과시간 힘수          //
   const getElapsedTime = () => {
     const now = dayjs().add(9, 'hour');
-    const writeTime = dayjs(writeDateTime);
+    const writeTime = dayjs(writeDatetime);
 
     const gap = now.diff(writeTime, 's');
     if (gap < 60) return `${gap}초 전`;

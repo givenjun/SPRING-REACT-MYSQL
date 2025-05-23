@@ -2,7 +2,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import './style.css'
 import { useEffect, useState } from 'react';
 import { BoardListItem } from 'types/interface';
-import { latestBoardListMock } from 'mocks';
 import BoardItem from 'components/BoardItem';
 import { SEARCH_PATH } from 'constant';
 import Pagination from 'components/Pagination';
